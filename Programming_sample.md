@@ -1,34 +1,49 @@
-# A study of Chicago's Living Experience
-*we want to study... Crime, Housing, and Transportation. 
+# A Study of Chicago's Living Experience
 
-###* First, we import libraries needed *###
+*We aim to study three aspects of Chicago's living experience: Crime, Housing, and Transportation.*
+
+---
+
+## Import Required Libraries
+
 ```python
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 import warnings
-```python
+warnings.filterwarnings("ignore")
+```
 
-## Next, we import data csv files
+---
+
+## Load and Ingest Data
+
 ```python
-# Load data from a CSV file and store as different dataframes (df)
+# Load data from CSV files
 df_crime = pd.read_csv('chicago_crime_data.csv')
 df_real_est = pd.read_csv('realest.csv')
 df_red_light = pd.read_csv('red_light_camera_violation.csv')
 df_speed = pd.read_csv('speed_camera_violation.csv')
 ```
 
-## First, I want to study Chicago's Crime
-### Data Prepare
-First, prepare the data ready for use
+---
+
+## Preparing the Crime Data
+
+### Data Preparation
+
+1. Convert `DATE` column to datetime format.
+2. Filter data from 2019 onwards.
+3. Rename and select specific columns.
+
 ```python
-# Ensure DATE column is datetime format
+# Ensure DATE column is in datetime format
 df_crime['DATE'] = pd.to_datetime(df_crime['DATE'], errors='coerce')
 
 # Filter data from 2019 onwards
 df_filtered = df_crime[df_crime['DATE'].dt.year >= 2019]
 
-# Rename selected columns
+# Rename and select columns
 columns_to_select = {
     'DATE': 'date',
     'ZIP_CODE': 'zip_zone',
@@ -40,14 +55,14 @@ columns_to_select = {
 
 df_for_use = df_filtered[list(columns_to_select.keys())].rename(columns=columns_to_select)
 ```
-I did.... so we can ....
 
-### Visualization for 6 aspects 
+---
 
-#### 1. Prepare the data for visualization By quarter 
+### Visualization Preparation
+
+#### 1. Distribution by Quarter
+
 ```python
-
-# Subplot 1: Distribution by quarter
 quarters = {
     'Fall': [(9, 13), (12, 25)],
     'Winter': [(12, 25), (3, 15)],
@@ -69,42 +84,42 @@ quarter_df = pd.DataFrame(
 )
 ```
 
-#### 2. Prepare for visualization by day of week 
-```python 
+#### 2. Distribution by Day of the Week
+
+```python
 weekday_counts = df_for_use['day_of_week'].dropna().value_counts()
 ```
 
+#### 3. Distribution by Zip Zone
 
-#### 3. Prepare for ....
 ```python
 zip_counts = df_for_use['zip_zone'].dropna().value_counts().head(7)
-
 ```
 
-#### 4,5,6 By ....
+#### 4–6: Other Metrics
+
 ```python
-# Subplot 4: Single vs multiple gunshots
+# Gunshot Type Distribution
 gunshot_counts = df_for_use['single_or_multi'].dropna().value_counts()
 
-# Subplot 5: Most common rounds
+# Most Common Rounds
 rounds_counts = df_for_use['rounds'].dropna().value_counts().head(3)
 
-# Subplot 6: Hour distribution
+# Hourly Distribution
 bins = [7, 12, 17, 23, 3, 7]
 hour_bins = pd.cut(df_for_use['hour'], bins=[0, 7, 12, 17, 23, 24], labels=['3-7', '7-12', '12-5', '5-11', '12-3'])
 hour_counts = hour_bins.value_counts().sort_index()
-
 ```
 
+---
 
-### Visualize them in a graph
+### Data Visualization
 
 ```python
-
-# Create 3x2 subplots
+# Create a 3x2 subplot layout
 fig, axes = plt.subplots(3, 2, figsize=(15, 15))
 
-# Plot each subplot
+# Plot each metric
 sns.barplot(x='Quarter', y='Count', data=quarter_df, ax=axes[0, 0], palette='Blues')
 axes[0, 0].set_title('Case Distribution by Quarter')
 
@@ -128,10 +143,15 @@ axes[2, 1].set_title('Hour Distribution')
 
 plt.tight_layout()
 
-# Save the plot to a file
+# Save and display the plot
 fig.savefig("crime_analysis_plots.png")
 plt.show()
-
 ```
 
-result is : [use the link]
+---
+
+### Output Visualization
+
+The generated visualizations can be found in the following GitHub repository:
+
+- [Crime Analysis Plots](https://github.com/Yichun-Zhang-ZYC/Chicago_living/blob/main/crime_analysis_plots.png)
