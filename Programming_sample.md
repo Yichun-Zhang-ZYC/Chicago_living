@@ -152,6 +152,6 @@ plt.show()
 
 ### Output Visualization
 
-The generated visualizations can be found in the following GitHub repository:
+The generated visualization is displayed below:
 
-- [Crime Analysis Plots](https://github.com/Yichun-Zhang-ZYC/Chicago_living/blob/main/crime_analysis_plots.png)
+![Crime Analysis Plots](https://github.com/Yichun-Zhang-ZYC/Chicago_living/raw/main/crime_analysis_plots.png)
